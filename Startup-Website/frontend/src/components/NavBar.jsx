@@ -39,13 +39,27 @@ const NavBar = () => {
             Contact
           </NavLink>
 
-          <NavLink
+        </li>
+
+        <li>
+        <NavLink
             to="/startups"
             className={({ isActive }) =>
               isActive ? "text-[#07bad2] font-bold  border-b-8 pb-2 border-[#07bad2] " : "text-gray-400"
             }
           >
             Startups
+          </NavLink>
+        </li>
+
+        <li>
+        <NavLink
+            to="/founders"
+            className={({ isActive }) =>
+              isActive ? "text-[#07bad2] font-bold  border-b-8 pb-2 border-[#07bad2] " : "text-gray-400"
+            }
+          >
+            Founders
           </NavLink>
         </li>
 

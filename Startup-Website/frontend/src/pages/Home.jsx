@@ -6,6 +6,8 @@ import { FetchStartups } from "../utils/db";
 import axios from "axios"
 import { Card } from "../components/cards";
 import CardImage from "../assets/zomato.png"
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
 
@@ -28,6 +30,12 @@ const Home = () => {
 
     return (
         <>
+        
+
+    <Link to={`/startup/4`}>
+      View Details
+    </Link>
+
         <section className="flex flex-row justify-center  mt-7">
             <div className=" pl-20 ">
                 <img src={StartupMap} alt="Fading Image" className="w-150 min-w-min shrink-0"/>

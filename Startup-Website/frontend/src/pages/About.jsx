@@ -72,6 +72,9 @@ const AboutPage=()=>{
                 <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
                 <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
                 <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
+                <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
+                <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
+                <ImageCard heading="Connect" description="..." imageurl={ConnectImage} />
                 </div>
             </div>
         
