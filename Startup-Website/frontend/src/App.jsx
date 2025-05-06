@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar.jsx";
 import Startup from "./pages/Startups.jsx";
 import { Founder } from "./pages/Founders.jsx";
 import StartupDetails from "./pages/StartupDetails";
+import FounderDetails from "./pages/FounderDetails.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,12 +17,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <NavBar />
+        <NavBar/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/startups" element={<Startup />} />
           <Route path="/founders" element={<Founder />} />
+          <Route path="/founder/:id" element={<FounderDetails />} />
           <Route path="/startup/:id" element={<StartupDetails />} />
         </Routes>
       </BrowserRouter>

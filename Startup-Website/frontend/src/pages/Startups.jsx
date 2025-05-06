@@ -2,24 +2,26 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { CustomQuery } from "../utils/db";
 import { Card } from "../components/cards";
 import { useState, useEffect } from "react";
-import { LongCards } from "../components/LongCards";
-import axios from 'axios'; // Add this import
+import SearchBar from "../components/SearchBar";
+import VectorImage from "../assets/vectorImage.png"
+import { StartupCard } from "../components/StartupsCards";
+const ITEMS_PER_PAGE = 4;
 
 const Startup = () => {
   const [startups, setStartups] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const ITEMS_PER_PAGE = 2;
 
   // Filter state
   const [city, setCity] = useState("");
   const [startupYear, setStartupYear] = useState("");
-  const [stage, setStage] = useState("Public");
+  const [stage, setStage] = useState("");
+  const [founder,setFounder]=useState("");
+  const [industry, setIndustry]=useState("");
 
-  // Fetch initial data
   const fetchData = async () => {
     try {
-        const query = `
+      const query = `
         SELECT * FROM startups
         WHERE 
           ($1::text IS NULL OR city ILIKE $1)
@@ -28,7 +30,7 @@ const Startup = () => {
         ORDER BY id
         LIMIT $4 OFFSET $5
       `;
-      
+
       const values = [
         city ? `%${city}%` : null,
         startupYear ? parseInt(startupYear) : null,
@@ -37,24 +39,19 @@ const Startup = () => {
         0
       ];
 
-      const result = await CustomQuery(query, values); // gets filtered results
+      const result = await CustomQuery(query, values);
       const data = result.rows;
       setStartups(data);
-      setOffset(ITEMS_PER_PAGE); // ✅ Set offset correctly after initial load
-      setHasMore(data.length === ITEMS_PER_PAGE); // If the result is less than ITEMS_PER_PAGE, no more data
+      setOffset(ITEMS_PER_PAGE);
+      setHasMore(data.length === ITEMS_PER_PAGE);
     } catch (err) {
       console.error("Error fetching startups:", err);
     }
   };
 
-  useEffect(() => {
-    fetchData(); // fetch on initial load or filter change
-  }, [city, startupYear, stage]); // Re-fetch when filters change
-
   const fetchMoreData = async () => {
     try {
-
-        const query = `
+      const query = `
         SELECT * FROM startups
         WHERE 
           ($1::text IS NULL OR city ILIKE $1)
@@ -63,7 +60,7 @@ const Startup = () => {
         ORDER BY id
         LIMIT $4 OFFSET $5
       `;
-      
+
       const values = [
         city ? `%${city}%` : null,
         startupYear ? parseInt(startupYear) : null,
@@ -72,10 +69,10 @@ const Startup = () => {
         offset
       ];
 
-      const result = await CustomQuery(query, values); // gets filtered data
+      const result = await CustomQuery(query, values);
       const data = result.rows;
       if (data.length === 0) {
-        setHasMore(false); // no more data
+        setHasMore(false);
         return;
       }
 
@@ -86,77 +83,108 @@ const Startup = () => {
     }
   };
 
+  const handleSearch = (query) => {
+    console.log("Search for:", query);
+    // Add search handling logic here if needed
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [city, startupYear, stage]);
+
   return (
-    <>
-      <div className="flex flex-row">
-        <div className="flex-1 h-50 flex-col m-2 border-red-500 border-2 rounded-2xl">
-          {/* Filters */}
-          <div className="text-xl pt-4 ml-2">Apply Filters</div>
+<div className="flex gap-4 p-4 bg-fixed" style={{ backgroundImage: `url(${VectorImage})`  , backgroundSize: 'repeat'}}>      {/* Filters Sidebar */}
+      <div className="w-1/4 sticky top-4 h-fit border-2 border-red-500 rounded-2xl bg-white p-4 z-10">
+        <h2 className="text-xl font-semibold mb-4">Apply Filters</h2>
 
-          <div className="flex flex-row justify-between pb-2 pt-2 border-b-2 shadow-xs ml-2 mr-2 mb-2">
-            <label htmlFor="city">City:</label>
-            <input
-              id="city"
-              type="text"
-              placeholder="City Name"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="border-2"
-            />
-          </div>
-
-          <div className="flex flex-row justify-between pb-2 border-b-2 shadow-xs ml-2 mr-2 mb-2">
-            <label htmlFor="year">Year:</label>
-            <input
-              id="year"
-              type="text"
-              placeholder="Startup Year"
-              value={startupYear}
-              onChange={(e) => setStartupYear(e.target.value)}
-              className="border-2"
-            />
-          </div>
-
-          <div className="flex flex-row justify-between pb-2 ml-2 mr-2 mb-2">
-            <label htmlFor="stage">Stage:</label>
-            <input
-              id="stage"
-              type="text"
-              placeholder="Stage"
-              value={stage}
-              onChange={(e) => setStage(e.target.value)}
-              className="border-2"
-            />
-          </div>
-
-          <div>
-            <button
-              onClick={fetchData} // directly call fetchData when applying filters
-              className="bg-blue-600 text-white px-4 py-2 rounded"
-            >
-              Search
-            </button>
-          </div>
+        <div className="mb-4">
+          <label htmlFor="city" className="block mb-1 font-medium">City:</label>
+          <input
+            id="city"
+            type="text"
+            placeholder="City Name"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full border-2 px-2 py-1 rounded"
+          />
         </div>
 
-        <div className="flex-4 flex-col bg-amber-300">
-          <InfiniteScroll
-            dataLength={startups.length}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={<p>Loading more...</p>}
-            endMessage={<p>No more startups</p>}
-          >
-            <LongCards />
-            <LongCards />
-            <LongCards />
-            {startups.map((s, i) => (
-              <Card key={i} heading={s.name} subheading={s.city} />
-            ))}
-          </InfiniteScroll>
+        <div className="mb-4">
+          <label htmlFor="year" className="block mb-1 font-medium">Year:</label>
+          <input
+            id="year"
+            type="text"
+            placeholder="Startup Year"
+            value={startupYear}
+            onChange={(e) => setStartupYear(e.target.value)}
+            className="w-full border-2 px-2 py-1 rounded"
+          />
         </div>
+
+        <div className="mb-4">
+          <label htmlFor="stage" className="block mb-1 font-medium">Stage:</label>
+          <input
+            id="stage"
+            type="text"
+            placeholder="Stage"
+            value={stage}
+            onChange={(e) => setStage(e.target.value)}
+            className="w-full border-2 px-2 py-1 rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="founder" className="block mb-1 font-medium">Stage:</label>
+          <input
+            id="founder"
+            type="text"
+            placeholder="founder"
+            value={founder}
+            onChange={(e) => setFounder(e.target.value)}
+            className="w-full border-2 px-2 py-1 rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="industry" className="block mb-1 font-medium">Stage:</label>
+          <input
+            id="industry"
+            type="text"
+            placeholder="industry"
+            value={industry}
+            onChange={(e) => setIndustry(e.target.value)}
+            className="w-full border-2 px-2 py-1 rounded"
+          />
+        </div>
+
+        <button
+          onClick={fetchData}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Search
+        </button>
       </div>
-    </>
+
+      {/* Startup Cards */}
+      <div className="w-3/4">
+        <h1 className="mt-3 mb-3 text-xl font-semibold font-mono">Search for Startups</h1>
+        <SearchBar onSearch={handleSearch}/>
+        <InfiniteScroll
+          dataLength={startups.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<p className="text-center my-4">Loading more...</p>}
+          endMessage={<p className="text-center my-4">No more startups</p>}
+        >
+          
+          {startups.map((s, i) => (
+            <StartupCard
+              startup={s}
+            />
+          ))}
+        </InfiniteScroll>
+      </div>
+    </div>
   );
 };
 

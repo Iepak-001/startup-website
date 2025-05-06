@@ -51,26 +51,30 @@ const StartupDetails = () => {
                 }}/>
 
                 <div className='ml-7 '>
-                    <h1 className='text-2xl'>Zomato</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis corrupti consequuntur cum eum dolores, minima asperiores vitae quidem reiciendis voluptatibus voluptatem pariatur maiores placeat, sed quasi vero. Assumenda tempore ad, explicabo quo libero vitae esse odio rerum ipsam maxime dignissimos eligendi enim eos iusto natus voluptas quaerat non aliquam ratione officiis repellat. Dolores nobis natus molestiae ipsam nemo harum minus doloribus tempora dolor nihil? Inventore consequatur exercitationem nam assumenda numquam, velit molestiae doloremque soluta asperiores tempore dolorum saepe obcaecati tempora officia quo aliquam eveniet pariatur dolor quasi corrupti magnam facere quae. Facilis, molestias ducimus in asperiores quibusdam ut mollitia assumenda?</p>
+                    <h1 className='text-2xl'>{startup.name}</h1>
+                    <p>{startup.description}</p>
                 </div>
 
              </div>
 
              <div className='ml-7 border-2 rounded-2xl p-2 m-2'>
-                    Vison : Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis suscipit aliquam, perspiciatis, ei
+                    Vison : {startup.vision}
             </div>
 
             <div className='ml-7  flex flex-row m-9'>
                 {/* Founders and Investors */}
                 <div className='flex-1'>
                     <h1 className='text-2xl'>Founders</h1>
-                    <p>Founder1 founder2 Founder 3S</p>
+                    <p>{startup.founders.map((val,i)=>(
+                      <li key={i}>{val}</li>
+                    ))}</p>
                 </div>
 
                 <div className='flex-1'>
                     <h1 className='text-2xl'>Investors</h1>
-                    <p> founder2 Founder 3S</p>
+                    <p>{startup.investors.map((val,i)=>(
+                      <li key={i}>{val}</li>
+                    ))}</p>
                 </div>
             </div>
 
@@ -80,9 +84,7 @@ const StartupDetails = () => {
             </div>
 
             <div className='ml-7'>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt repudiandae ullam labore hic, adipisci accusantium quaerat sit optio omnis porro quisquam veniam at voluptas laborum, autem aperiam non et earum vitae nemo! Error unde asperiores eligendi laborum? Doloremque et at, cum illum odit nam, velit nihil numquam, nobis vitae itaque?<br /> <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam debitis officiis veniam unde maxime natus animi officia explicabo cumque, nisi qui adipisci et. Sit vero accusantium porro magnam mollitia unde?
-                <br /> <br />Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis odio incidunt qui. Dicta, enim fugit.
+                    {startup.story}
             </div>
 
             <div className='ml-7 mt-4 flex flex-row items-center mb-4 gap-5'>
@@ -91,10 +93,8 @@ const StartupDetails = () => {
             </div>
 
             <div className='ml-7'>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt repudiandae ullam labore hic, adipisci accusantium quaerat sit optio omnis porro quisquam veniam at voluptas laborum, autem aperiam non et earum vitae nemo! Error unde asperiores eligendi laborum? Doloremque et at, cum illum odit nam, velit nihil numquam, nobis vitae itaque?<br /> <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam debitis officiis veniam unde maxime natus animi officia explicabo cumque, nisi qui adipisci et. Sit vero accusantium porro magnam mollitia unde?
-                <br /> <br />Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perferendis odio incidunt qui. Dicta, enim fugit.
-            </div>
+            {startup.business_model}
+               </div>
 
         </div>
     </>

@@ -3,15 +3,15 @@ import Startup from "../assets/Startup.png";
 
 const NavBar = () => {
   return (
-    <nav className="flex flex-row justify-between items-center text-center m-2 h-10">
+    <nav className="flex flex-row justify-between items-center text-center m-2 h-10 position">
       <div>
         <img src={Startup} className="h-20" alt="Logo" />
       </div>
-      <ul className="flex flex-row gap-5 text-xl">
+      <ul className="flex flex-row gap-5 text-xl mr-4">
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) =>
+            className={({ isActive }) => 
               isActive ? "text-[#07bad2] font-bold  border-b-8 pb-2 border-[#07bad2]" : "text-gray-400"
             }
           >
@@ -29,17 +29,6 @@ const NavBar = () => {
           </NavLink>
         </li>
 
-        <li>
-          <NavLink
-            to="/contact"
-            className={({ isActive }) =>
-              isActive ? "text-[#07bad2] font-bold  border-b-8 pb-2 border-[#07bad2] " : "text-gray-400"
-            }
-          >
-            Contact
-          </NavLink>
-
-        </li>
 
         <li>
         <NavLink
