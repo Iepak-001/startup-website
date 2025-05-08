@@ -1,5 +1,4 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import { CustomQuery } from "../utils/db";
 import { Card } from "../components/cards";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
