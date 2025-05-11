@@ -1,11 +1,14 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import { CustomQuery } from "../utils/db";
+// import { CustomQuery } from "../utils/db";
 import { Card } from "../components/cards";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
 import VectorImage from "../assets/vectorImage.png"
 import { StartupCard } from "../components/StartupsCards";
-const ITEMS_PER_PAGE = 4;
+import axios from "axios";
+import { BASE_URL } from "../../constants";
+
+const ITEMS_PER_PAGE = 7;
 
 const Startup = () => {
   const [startups, setStartups] = useState([]);
@@ -19,28 +22,15 @@ const Startup = () => {
   const [founder,setFounder]=useState("");
   const [industry, setIndustry]=useState("");
 
+
   const fetchData = async () => {
     try {
-      const query = `
-        SELECT * FROM startups
-        WHERE 
-          ($1::text IS NULL OR city ILIKE $1)
-          AND ($2::int IS NULL OR founding_year = $2)
-          AND ($3::text IS NULL OR funding_stage ILIKE $3)
-        ORDER BY id
-        LIMIT $4 OFFSET $5
-      `;
-
-      const values = [
-        city ? `%${city}%` : null,
-        startupYear ? parseInt(startupYear) : null,
-        stage ? `%${stage}%` : null,
-        ITEMS_PER_PAGE,
-        0
-      ];
-
-      const result = await CustomQuery(query, values);
-      const data = result.rows;
+      const result= await axios.post(`${BASE_URL}/startups/fetch`,{
+        limit:ITEMS_PER_PAGE
+      });
+      const data = result.data;
+      console.log(data);
+      
       setStartups(data);
       setOffset(ITEMS_PER_PAGE);
       setHasMore(data.length === ITEMS_PER_PAGE);
@@ -51,26 +41,12 @@ const Startup = () => {
 
   const fetchMoreData = async () => {
     try {
-      const query = `
-        SELECT * FROM startups
-        WHERE 
-          ($1::text IS NULL OR city ILIKE $1)
-          AND ($2::int IS NULL OR founding_year = $2)
-          AND ($3::text IS NULL OR funding_stage ILIKE $3)
-        ORDER BY id
-        LIMIT $4 OFFSET $5
-      `;
+      
 
-      const values = [
-        city ? `%${city}%` : null,
-        startupYear ? parseInt(startupYear) : null,
-        stage ? `%${stage}%` : null,
-        ITEMS_PER_PAGE,
-        offset
-      ];
-
-      const result = await CustomQuery(query, values);
-      const data = result.rows;
+      const result = await axios.post(`${BASE_URL}/startups/fetch`,{
+        limit:offset
+      });
+      const data = result.data;
       if (data.length === 0) {
         setHasMore(false);
         return;
@@ -177,8 +153,10 @@ const Startup = () => {
           endMessage={<p className="text-center my-4">No more startups</p>}
         >
           
-          {startups.map((s, i) => (
+          {(startups).map((s,i) => (
+
             <StartupCard
+              key={i}
               startup={s}
             />
           ))}

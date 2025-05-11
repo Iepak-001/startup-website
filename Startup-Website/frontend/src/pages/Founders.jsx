@@ -1,11 +1,12 @@
 import InfiniteScroll from "react-infinite-scroll-component";
+// import { CustomQuery } from "../utils/db";
 import { Card } from "../components/cards";
 import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import { FounderCard } from "../components/FoundersCard";
-
-
+import axios from "axios";
+import { BASE_URL } from "../../constants";
 
 export const Founder = () => {
     const ITEMS_PER_PAGE = 4;
@@ -17,11 +18,11 @@ export const Founder = () => {
 
   const fetchData = async () => {
     try {
-      const query = `
-        SELECT * FROM founders`;
-
-      const result = await CustomQuery(query);
-      const data = result.rows;
+      const result= await axios.post(`${BASE_URL}/founders/fetch`,{
+        limit:ITEMS_PER_PAGE,
+        offset:offset
+      });
+      const data = result.data;
       setFounders(data);
       setOffset(ITEMS_PER_PAGE);
       setHasMore(data.length === ITEMS_PER_PAGE);
@@ -32,11 +33,11 @@ export const Founder = () => {
 
   const fetchMoreData = async () => {
     try {
-        const query = `
-        SELECT * FROM founders`;
-
-      const result = await CustomQuery(query);
-      const data = result.rows;
+      const result = await axios.post(`${BASE_URL}/founders/fetch`,{
+        limit:ITEMS_PER_PAGE,
+        offset:offset
+      });
+      const data = result.data;
       if (data.length === 0) {
         setHasMore(false);
         return;
@@ -146,6 +147,7 @@ export const Founder = () => {
         >
           {founders.map((s, i) => (
             <FounderCard
+            key={i}
               founder={s}
             />
           ))}

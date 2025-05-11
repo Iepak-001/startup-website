@@ -17,7 +17,10 @@ const startupSchema = new mongoose.Schema(
     description: String,
     funding_stage: String,
     vision: String,
-    business_model: [String],
+    business_model: { // Now a simple Object type
+      type: Object,
+      default: {} // Optional: Set a default empty object
+    },
     trending_index: Number,
     investors: [String], // Array of investor names
     story: [String],

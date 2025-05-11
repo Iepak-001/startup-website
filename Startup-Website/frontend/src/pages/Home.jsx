@@ -1,13 +1,13 @@
 import { useState,useEffect } from "react";
 import HeroImage from "../assets/hero-startup.png"; // Replace with your own image path
 import StartupMap from "../assets/startup-map.png"
-import { BACKEND_URL } from "../../constants"
-import { FetchStartups } from "../utils/db";
+
+
 import axios from "axios"
 import { Card } from "../components/cards";
 import CardImage from "../assets/zomato.png"
 import { Link } from 'react-router-dom';
-
+import { BASE_URL } from "../../constants";
 
 const Home = () => {
 
@@ -16,7 +16,9 @@ const Home = () => {
     useEffect(() => {
       const fetchData = async () => { // Wrap the fetch in an async function
         try {
-          const data = await FetchStartups(); // Await the result
+          const data = await axios.post(`${BASE_URL}/startups/fetch`,{
+            limit:6
+          }); // Await the result
           setStartups(data); // Store the data in state
           console.log(data);
         } catch (error) {

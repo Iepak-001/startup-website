@@ -1,14 +1,11 @@
 import mongoose from 'mongoose';
 
 const founderSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+
   name: {
     type: String,
     required: true,
+    unique:true
   },
   title: {
     type: String, // e.g., "Co-founder & CEO"
@@ -55,9 +52,10 @@ const founderSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false
-  }
+  },
+  story: [String],
 }, { timestamps: true });
 
-const Founder = mongoose.model('Founder', founderSchema);
+const Founders = mongoose.model('Founder', founderSchema);
 
-export default Founder;
+export  {Founders}

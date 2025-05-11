@@ -13,7 +13,7 @@ const app=express()
 //cors batata hai kaha kaha se request accept krenge
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "*",
     credentials:true
 }))
 
@@ -36,10 +36,10 @@ app.use(cookieParser())
 
 //ROUTES LANA HAI
 import startupsRouter from './routes/startups.routes.js'
-
+import foundersRouter from "./routes/founders.routes.js"
 //Routes declaration
 app.use("/startups",startupsRouter) //userRouter ko control de dega
-
+app.use("/founders",foundersRouter)
 
 
 export {app}

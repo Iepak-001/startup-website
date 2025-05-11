@@ -8,6 +8,7 @@ const NavBar = () => {
         <img src={Startup} className="h-20" alt="Logo" />
       </div>
       <ul className="flex flex-row gap-5 text-xl mr-4">
+        
         <li>
           <NavLink
             to="/"
@@ -18,6 +19,7 @@ const NavBar = () => {
             Home
           </NavLink>
         </li>
+
         <li>
           <NavLink
             to="/about"

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 export const FounderCard = ({founder}) => {
   return (
     <>
-     <Link to={`/founder/${founder.id}`}>
-      <div className="flex flex-row h-50 shadow-2xl border-1 border-yellow-500 bg-white m-4 rounded-2xl hover:bg-gray-200 hover: cursor-alias ">
+     <Link to={`/founder/${founder._id}`}>
+      <div className="flex flex-row h-50 shadow-2xl m-2 overflow-hidden border-1 border-yellow-500 bg-white m-4 rounded-2xl hover:bg-gray-200 hover: cursor-alias ">
         {/* container    */}
 
         <div className="overflow-hidden object-cover">
@@ -16,7 +16,7 @@ export const FounderCard = ({founder}) => {
           />
         </div>
 
-        <div className="flex-2/3 p-2 flex flex-col pl-9">
+        <div className="flex-2/3 p-2 flex flex-col pl-9 m-2">
             <p className="text-2xl font-semibold font-mono">{founder.name}</p>
             <p className="text-xl"> {founder.title}, ..</p>
             <p className="text-xl">Studies: {founder.professional_background}</p>
